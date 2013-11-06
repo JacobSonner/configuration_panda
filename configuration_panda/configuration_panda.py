@@ -25,7 +25,8 @@ class ConfigurationPanda(object):
 
         """
         if not isinstance(config_files_location_env_vars, list):
-            raise InvalidClientInput
+            raise InvalidClientInput(
+                'config_files_location_env_vars must by a list.')
 
         configuration_files = (
             self._configuration_files(config_files_location_env_vars))
