@@ -45,6 +45,13 @@ class ConfigurationPanda(object):
 
         self._load_environment_variables()
 
+    def __getitem__(self, item):
+        """
+        Return instance attribute via dictionary syntax.
+
+        """
+        return self.__dict__[item]
+
     def _configuration_files(self, config_files_location_env_vars):
         configuration_files = list()
         for env_var in config_files_location_env_vars:
