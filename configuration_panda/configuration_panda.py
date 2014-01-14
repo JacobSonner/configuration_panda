@@ -7,8 +7,12 @@ from exceptions import DuplicateJSONFile, InvalidClientInput
 
 
 class ConfigurationPanda(object):
+    """
+    So, what I want to do is increase the flexibility of the object class
+    so that usage => ConfigurationPanda[x] == ConfigurationPanda.x
+    """
 
-    def __init__(self, config_files_location_env_vars):
+    def __init__(self, config_files_location_env_vars=['CONFIGURATION_PANDA']):
         """
         The constructor creates an attribute on the object for each
         JSON file found in each directory specified by
@@ -17,7 +21,8 @@ class ConfigurationPanda(object):
         Args:
             config_files_location_env_vars (list): List of
                 environment variables which point to directories containing
-                configuration files.
+                configuration files.  Defaults to a list containing
+                the single entry 'CONFIGURATION_PANDA'.
 
         Raises:
             DuplicateJSONFile: When an attempt is
