@@ -18,6 +18,16 @@ class DuplicateJSONFile(ConfigurationPandaError):
     """
     pass
 
+
+class ExistingEnvironmentVariable(ConfigurationPandaError):
+    """
+    Error to raise when an existing environment variable prevents a
+    program operation from succeeding.
+
+    """
+    pass
+
+
 class InvalidParameter(ConfigurationPandaError):
     """
     Error to raise when an error arises from the use of invalid

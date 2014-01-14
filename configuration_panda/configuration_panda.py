@@ -3,7 +3,8 @@ import glob
 import os
 import re
 
-from exceptions import DuplicateJSONFile, InvalidParameter
+from exceptions import (
+    DuplicateJSONFile, InvalidParameter, ExistingEnvironmentVariable)
 
 
 class ConfigurationPanda(object):
@@ -86,5 +87,9 @@ class ConfigurationPanda(object):
     def _load_environment_variables(self):
         if hasattr(self, 'environment_variables'):
             for env_var in self.environment_variables:
+                if env_var in os.environ:
+                    raise ExistingEnvironmentVariable(
+                        'An attempt was made to set the environment variable '
+                        '{}, but this variable already exists.'.format(env_var)
+                    )
                 os.environ[env_var] = self.environment_variables[env_var]
-
