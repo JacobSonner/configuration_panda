@@ -2,7 +2,7 @@ import os
 from unittest import TestCase
 
 from ..configuration_panda import ConfigurationPanda
-from ..exceptions import DuplicateJSONFile, InvalidClientInput
+from ..exceptions import DuplicateJSONFile, InvalidParameter
 
 
 class Test_ConfigurationPanda(TestCase):
@@ -24,28 +24,28 @@ class Test_ConfigurationPanda(TestCase):
 
     def test_constructor_with_invalid_environment_variables(self):
         """
-        Prove __init__() throws InvalidClientInput when given a bad env_var.
+        Prove __init__() throws InvalidParameter when given a bad env_var.
 
         """
-        self.assertRaises(InvalidClientInput,
+        self.assertRaises(InvalidParameter,
                           ConfigurationPanda,
                           ['NON_EXISTENT_ENV_VAR'])
 
     def test_constructor_with_invalid_1st_parameter_type(self):
         """
-        Prove __init__() throws InvalidClientInput when given a non-list
+        Prove __init__() throws InvalidParameter when given a non-list
         as its first parameter.
 
         """
-        self.assertRaises(InvalidClientInput,
+        self.assertRaises(InvalidParameter,
                           ConfigurationPanda,
                           'NON_EXISTENT_ENV_VAR')
 
-        self.assertRaises(InvalidClientInput,
+        self.assertRaises(InvalidParameter,
                           ConfigurationPanda,
                           123)
 
-        self.assertRaises(InvalidClientInput,
+        self.assertRaises(InvalidParameter,
                           ConfigurationPanda,
                           {'key': 'value'})
 

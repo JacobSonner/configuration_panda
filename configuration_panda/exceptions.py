@@ -18,7 +18,7 @@ class DuplicateJSONFile(ConfigurationPandaError):
     """
     pass
 
-class InvalidClientInput(ConfigurationPandaError):
+class InvalidParameter(ConfigurationPandaError):
     """
     Error to raise when an error arises from the use of invalid
     input provided by the client.

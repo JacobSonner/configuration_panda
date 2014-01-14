@@ -3,13 +3,14 @@ import glob
 import os
 import re
 
-from exceptions import DuplicateJSONFile, InvalidClientInput
+from exceptions import DuplicateJSONFile, InvalidParameter
 
 
 class ConfigurationPanda(object):
     """
-    So, what I want to do is increase the flexibility of the object class
-    so that usage => ConfigurationPanda[x] == ConfigurationPanda.x
+    Provides access to the contents of JSON configuration files using
+    object or dictionary style syntax.
+
     """
 
     def __init__(self, config_files_location_env_vars=['CONFIGURATION_PANDA']):
@@ -30,7 +31,7 @@ class ConfigurationPanda(object):
 
         """
         if not isinstance(config_files_location_env_vars, list):
-            raise InvalidClientInput(
+            raise InvalidParameter(
                 'config_files_location_env_vars must by a list.')
 
         configuration_files = (
@@ -52,17 +53,18 @@ class ConfigurationPanda(object):
         """
         return self.__dict__[item]
 
-    def _configuration_files(self, config_files_location_env_vars):
+    def _configuration_files(self, config_files_locations):
         configuration_files = list()
-        for env_var in config_files_location_env_vars:
+        for config_files_location in config_files_locations:
             try:
                 configuration_files.extend(glob.glob(
-                    os.environ[env_var] + '/*.json'))
+                    os.environ[config_files_location] + '/*.json'))
             except KeyError:
-                raise InvalidClientInput('The environment variable specified '
-                                         'by the client ({}) for use by '
-                                         'the constructor does not exist'
-                                         'on the system.'.format(env_var))
+                raise InvalidParameter('The environment variable specified '
+                                       'by the client ({}) for use by '
+                                       'the constructor does not exist '
+                                       'on the system.'.format(
+                                           config_files_location))
         return configuration_files
 
     def _check_for_existing_attribute(self, attribute_name):
