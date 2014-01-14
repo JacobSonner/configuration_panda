@@ -82,4 +82,4 @@ make them a permanent fixture in a .bash_profile or .bash_rc file.
 
 from configuration_panda import ConfigurationPanda
 
-__version__ = '0.2'
+__version__ = '0.3'

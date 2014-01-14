@@ -12,6 +12,9 @@ setup(
     author_email="mike@eikonomega.com",
 
     install_requires=requirements,
-    include_package_data=True
+    #include_package_data=True,
+    package_data = {
+        '': ['requirements.txt']
+    }
 )
 
