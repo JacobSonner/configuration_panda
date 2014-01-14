@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 import configuration_panda
 
-requirements = open('requirements.txt')
+requirements = open('requirements.txt').readlines()
 
 setup(
     name="ConfigurationPanda",
