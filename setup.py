@@ -12,7 +12,8 @@ setup(
     author="Mike Dunn",
     author_email="mike@eikonomega.com",
     url="https://github.com/eikonomega/configuration_panda",
-    description="Easy program configuration for Pandas.",
+    description="ConfigurationPanda provides easy loading and access to "
+                "the data elements of JSON based configuration files.",
     long_description=configuration_panda.__doc__,
 
     install_requires=requirements,
