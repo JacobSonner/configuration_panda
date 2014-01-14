@@ -26,10 +26,6 @@ class ConfigurationPanda(object):
                 configuration files.  Defaults to a list containing
                 the single entry 'CONFIGURATION_PANDA'.
 
-        Raises:
-            DuplicateJSONFile: When an attempt is
-                made to load two JSON files with the same name.
-
         """
         if not isinstance(config_files_location_env_vars, list):
             raise InvalidParameter(
@@ -45,7 +41,8 @@ class ConfigurationPanda(object):
             self._check_for_existing_attribute(attribute_name)
             self._load_data_onto_attribute(attribute_name, configuration_file)
 
-        self._load_environment_variables()
+        if hasattr(self, 'environment_variables'):
+            self._load_environment_variables()
 
     def __getitem__(self, item):
         """
@@ -55,6 +52,12 @@ class ConfigurationPanda(object):
         return self.__dict__[item]
 
     def _configuration_files(self, config_files_locations):
+        """
+        Raises:
+            DuplicateJSONFile: When an attempt is
+                made to load two JSON files with the same name.
+
+        """
         configuration_files = list()
         for config_files_location in config_files_locations:
             try:
@@ -85,11 +88,19 @@ class ConfigurationPanda(object):
                     "syntax errors.".format(configuration_file))
 
     def _load_environment_variables(self):
-        if hasattr(self, 'environment_variables'):
-            for env_var in self.environment_variables:
-                if env_var in os.environ:
-                    raise ExistingEnvironmentVariable(
-                        'An attempt was made to set the environment variable '
-                        '{}, but this variable already exists.'.format(env_var)
-                    )
-                os.environ[env_var] = self.environment_variables[env_var]
+        """
+        Set each element of self.environment_variables as an
+        environment variable.
+
+        Raises:
+            ExistingEnvironmentVariable: If setting a environment variable
+              would overwrite an existing value.
+
+        """
+        for env_var in self.environment_variables:
+            if env_var in os.environ:
+                raise ExistingEnvironmentVariable(
+                    'An attempt was made to set the environment variable '
+                    '{}, but this variable already exists.'.format(env_var)
+                )
+            os.environ[env_var] = self.environment_variables[env_var]
