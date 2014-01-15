@@ -24,10 +24,6 @@ class Test_ConfigurationPanda(TestCase):
         os.environ['DUPLICATE_CONFIGURATION_FILES'] = \
             test_file_path + '/duplicate_configuration_files'
 
-    def setUp(self):
-        self.configuration_panda = ConfigurationPanda(
-            ['PRIMARY_CONFIGURATION_FILES', 'SECONDARY_CONFIGURATION_FILES'])
-
     def tearDown(self):
         #Remove all environment variables set during setUp().
         for variable in self.configuration_panda.environment_variables:
@@ -41,25 +37,6 @@ class Test_ConfigurationPanda(TestCase):
         with pytest.raises(InvalidParameter):
             ConfigurationPanda(['NON_EXISTENT_ENV_VAR'])
 
-
-    def test_constructor_with_invalid_1st_parameter_type(self):
-        """
-        Prove __init__() throws InvalidParameter when given a non-list
-        as its first parameter.
-
-        """
-        self.assertRaises(InvalidParameter,
-                          ConfigurationPanda,
-                          'NON_EXISTENT_ENV_VAR')
-
-        self.assertRaises(InvalidParameter,
-                          ConfigurationPanda,
-                          123)
-
-        self.assertRaises(InvalidParameter,
-                          ConfigurationPanda,
-                          {'key': 'value'})
-
     def test_constructor(self):
         """
         Prove that the constructor executed in the setUp() method
@@ -68,6 +45,9 @@ class Test_ConfigurationPanda(TestCase):
         primary_configuration_files  directory.
 
         """
+        self.configuration_panda = ConfigurationPanda(
+            ['PRIMARY_CONFIGURATION_FILES', 'SECONDARY_CONFIGURATION_FILES'])
+
         self.assertDictContainsSubset(
             {u'url': u'smtp.yourschool.edu',
              u'login': u'testaccount2',
