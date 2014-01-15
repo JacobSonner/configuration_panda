@@ -22,6 +22,11 @@ class Test_ConfigurationPanda(TestCase):
         self.configuration_panda = ConfigurationPanda(
             ['PRIMARY_CONFIGURATION_FILES', 'SECONDARY_CONFIGURATION_FILES'])
 
+    def tearDown(self):
+        # Remove all environment variables set during setUp().
+        for variable in self.configuration_panda.environment_variables:
+            del os.environ[variable]
+
     def test_constructor_with_invalid_environment_variables(self):
         """
         Prove __init__() throws InvalidParameter when given a bad env_var.
