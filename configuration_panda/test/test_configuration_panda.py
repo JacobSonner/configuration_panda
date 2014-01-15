@@ -2,7 +2,8 @@ import os
 from unittest import TestCase
 
 from ..configuration_panda import ConfigurationPanda
-from ..exceptions import DuplicateJSONFile, InvalidParameter
+from ..exceptions import (
+    DuplicateJSONFile, InvalidParameter, ExistingEnvironmentVariable)
 
 
 class Test_ConfigurationPanda(TestCase):
@@ -11,19 +12,23 @@ class Test_ConfigurationPanda(TestCase):
 
     """
 
-    def setUp(self):
-        self.test_file_path = os.path.dirname(__file__)
+    @classmethod
+    def setUpClass(cls):
+        test_file_path = os.path.dirname(__file__)
 
         os.environ['PRIMARY_CONFIGURATION_FILES'] = \
-            self.test_file_path + '/primary_configuration_files'
+            test_file_path + '/primary_configuration_files'
         os.environ['SECONDARY_CONFIGURATION_FILES'] = \
-            self.test_file_path + '/secondary_configuration_files'
+            test_file_path + '/secondary_configuration_files'
+        os.environ['DUPLICATE_CONFIGURATION_FILES'] = \
+            test_file_path + '/duplicate_configuration_files'
 
+    def setUp(self):
         self.configuration_panda = ConfigurationPanda(
             ['PRIMARY_CONFIGURATION_FILES', 'SECONDARY_CONFIGURATION_FILES'])
 
     def tearDown(self):
-        # Remove all environment variables set during setUp().
+        #Remove all environment variables set during setUp().
         for variable in self.configuration_panda.environment_variables:
             del os.environ[variable]
 
@@ -90,9 +95,6 @@ class Test_ConfigurationPanda(TestCase):
 
         """
 
-        os.environ['DUPLICATE_CONFIGURATION_FILES'] = \
-            self.test_file_path + '/duplicate_configuration_files'
-
         # Test for duplicate file names in distinct directories.
         self.assertRaises(
             DuplicateJSONFile,
@@ -107,3 +109,26 @@ class Test_ConfigurationPanda(TestCase):
             ConfigurationPanda,
             ['PRIMARY_CONFIGURATION_FILES', 'PRIMARY_CONFIGURATION_FILES']
         )
+
+    def test_constructor_with_overriding_env_var(self):
+        """
+        Prove that ConfigurationPanda.__init__() throws an
+        ExistingEnvironmentVariable exception when an attempt is made
+        to set the value of an existing environment variable.
+
+        """
+
+        self.assertRaises(ExistingEnvironmentVariable,
+                          ConfigurationPanda,
+                          ['PRIMARY_CONFIGURATION_FILES'])
+
+    def test_constructor_for_environment_variable_assignment(self):
+        """
+        Prove that ConfigurationPanda.__init__() sets environment variables
+        from the contents of a file called 'environment_variables.json'
+        when it located during the JSON file search.
+
+        """
+
+        self.assertEqual(os.environ['MY_FAVORITE_FOOD'], "Dumplings")
+        self.assertEqual(os.environ['MY_WORST_NIGHTMARE'], "The Noodle Dream")

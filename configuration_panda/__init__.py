@@ -73,13 +73,17 @@ If a JSON file named 'environment_variables.json' is found during
 directory scanning, an attempt will be made to create an environment variable
 from each entry within the JSON file.
 
-For instance::
+For instance, the following file::
 
     environment_variables.json
       {
         "MY_FAVORITE_FOOD": "Dumplings",
         "MY_WORST_NIGHTMARE": "The Noodle Dream"
       }
+
+Will result in each entry being added to the environment of the thread
+in which the program is running.  They will cease to exist upon program
+termination.
 
 This functionality allows you to dynamically insert environment variables
 at runtime rather than having to make them a permanent fixture in a
@@ -90,4 +94,4 @@ at runtime rather than having to make them a permanent fixture in a
 
 from configuration_panda import ConfigurationPanda
 
-__version__ = '0.7'
+__version__ = '0.8'
