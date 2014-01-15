@@ -1,5 +1,6 @@
 import os
 from unittest import TestCase
+import pytest
 
 from ..configuration_panda import ConfigurationPanda
 from ..exceptions import (
@@ -37,9 +38,9 @@ class Test_ConfigurationPanda(TestCase):
         Prove __init__() throws InvalidParameter when given a bad env_var.
 
         """
-        self.assertRaises(InvalidParameter,
-                          ConfigurationPanda,
-                          ['NON_EXISTENT_ENV_VAR'])
+        with pytest.raises(InvalidParameter):
+            ConfigurationPanda(['NON_EXISTENT_ENV_VAR'])
+
 
     def test_constructor_with_invalid_1st_parameter_type(self):
         """
