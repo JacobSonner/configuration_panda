@@ -24,10 +24,10 @@ class Test_ConfigurationPanda(TestCase):
         os.environ['DUPLICATE_CONFIGURATION_FILES'] = \
             test_file_path + '/duplicate_configuration_files'
 
-    def tearDown(self):
-        #Remove all environment variables set during setUp().
-        for variable in self.configuration_panda.environment_variables:
-            del os.environ[variable]
+    # def tearDown(self):
+    #     #Remove all environment variables set during setUp().
+    #     for variable in self.configuration_panda.environment_variables:
+    #         del os.environ[variable]
 
     def test_constructor_with_invalid_environment_variables(self):
         """
@@ -37,34 +37,19 @@ class Test_ConfigurationPanda(TestCase):
         with pytest.raises(InvalidParameter):
             ConfigurationPanda(['NON_EXISTENT_ENV_VAR'])
 
-    def test_constructor(self):
+    def test_constructor_attribute_existence(self):
         """
         Prove that the constructor executed in the setUp() method
         correctly sets object attributes based on the ldap.json
-        and smtp.json mock configuration files included in the
-        primary_configuration_files  directory.
+        and environment_variables.json mock configuration files
+        included in the 'primary_configuration_files' directory.
 
         """
-        self.configuration_panda = ConfigurationPanda(
-            ['PRIMARY_CONFIGURATION_FILES', 'SECONDARY_CONFIGURATION_FILES'])
+        configuration_panda = ConfigurationPanda(
+            ['PRIMARY_CONFIGURATION_FILES'])
 
-        self.assertDictContainsSubset(
-            {u'url': u'smtp.yourschool.edu',
-             u'login': u'testaccount2',
-             u'password': u'testaccount2password'},
-            self.configuration_panda.smtp['TestAccount2'])
-
-        self.assertDictContainsSubset(
-            {u'url': u'ldaps://primaryldap.yourschool.edu:111',
-             u'login': u'cn=LDAP Testing',
-             u'password': u'LDAP Password'},
-            self.configuration_panda.ldap['primary'])
-
-        self.assertEquals(self.configuration_panda.smtp['TestAccount1']['url'],
-                          'smtp.yourschool.edu')
-
-        self.assertEquals(self.configuration_panda.ldap['primary']['url'],
-                          'ldaps://primaryldap.yourschool.edu:111')
+        assert hasattr(configuration_panda, 'ldap')
+        assert hasattr(configuration_panda, 'environment_variables')
 
     def test_constructor_duplicate_configuration_filenames(self):
         """
