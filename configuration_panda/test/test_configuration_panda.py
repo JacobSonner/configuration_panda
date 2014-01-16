@@ -55,7 +55,24 @@ class Test_ConfigurationPanda(TestCase):
             assert test_object['ldap']
             assert test_object['environment_variables']
 
+    def test_constructor_attribute_content_is_correct(self):
+        """
+        Prove that after construction, a ConfigurationPanda object's
+        attributes have the correct content from the JSON files.
 
+        """
+
+        with ConfigurationPanda(
+                ['SECONDARY_CONFIGURATION_FILES']) as test_object:
+            assert test_object.smtp['TestAccount1'] == dict(
+                url='smtp.yourschool.edu',
+                login='testaccount1',
+                password='testaccount1password'
+            )
+            assert test_object.smtp['TestAccount1'] == dict(
+                url='smtp.yourschool.edu',
+                login='testaccount1',
+                password='testaccount1password')
 
     def test_constructor_duplicate_configuration_filenames(self):
         """
