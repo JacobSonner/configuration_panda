@@ -24,7 +24,7 @@ class ConfigurationPanda(object):
             config_files_location_env_vars (list): List of
                 environment variables which point to directories containing
                 configuration files.  Defaults to a list containing
-                the single entry 'CONFIGURATION_PANDA'.
+                a single entry, 'CONFIGURATION_PANDA'.
 
         """
         if not isinstance(config_files_location_env_vars, list):
@@ -44,12 +44,20 @@ class ConfigurationPanda(object):
         if hasattr(self, 'environment_variables'):
             self._load_environment_variables()
 
-    def __getitem__(self, item):
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if 'environment_variables' in self.__dict__:
+            for variable in self.environment_variables:
+                del os.environ[variable]
+
+    def __getitem__(self, key):
         """
         Return instance attribute via dictionary syntax.
 
         """
-        return self.__dict__[item]
+        return self.__dict__[key]
 
     def _configuration_files(self, config_files_locations):
         """
