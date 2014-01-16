@@ -24,14 +24,10 @@ class Test_ConfigurationPanda(TestCase):
         os.environ['DUPLICATE_CONFIGURATION_FILES'] = \
             test_file_path + '/duplicate_configuration_files'
 
-    # def tearDown(self):
-    #     #Remove all environment variables set during setUp().
-    #     for variable in self.configuration_panda.environment_variables:
-    #         del os.environ[variable]
-
     def test_constructor_with_invalid_environment_variables(self):
         """
-        Prove __init__() throws InvalidParameter when given a bad env_var.
+        Prove __init__() throws InvalidParameter when given a
+        non-existent env_var.
 
         """
         with pytest.raises(InvalidParameter):
@@ -39,42 +35,38 @@ class Test_ConfigurationPanda(TestCase):
 
     def test_constructor_attribute_existence(self):
         """
-        Prove that the constructor executed in the setUp() method
-        correctly sets object attributes based on the ldap.json
-        and environment_variables.json mock configuration files
-        included in the 'primary_configuration_files' directory.
+        Prove that the constructor correctly sets object attributes
+        based on the ldap.json and environment_variables.json mock
+        configuration files included in the
+        'primary_configuration_files' directory.
 
         """
-        configuration_panda = ConfigurationPanda(
-            ['PRIMARY_CONFIGURATION_FILES'])
+        with ConfigurationPanda(['PRIMARY_CONFIGURATION_FILES']) as test_object:
+            assert hasattr(test_object, 'ldap')
+            assert hasattr(test_object, 'environment_variables')
 
-        assert hasattr(configuration_panda, 'ldap')
-        assert hasattr(configuration_panda, 'environment_variables')
+    def test_constructor_attribute_access_via_dictionary_syntax(self):
+        """
+        Prove that ConfigurationPanda object attributes can be
+        accessed using dictionary style syntax.
+
+        """
+        with ConfigurationPanda(['PRIMARY_CONFIGURATION_FILES']) as test_object:
+            assert test_object['ldap']
+            assert test_object['environment_variables']
+
+
 
     def test_constructor_duplicate_configuration_filenames(self):
         """
-        Prove that ConfigurationPanda.__init__() throws a
-        DuplicateJSONFile when more an attempt is made to
-        load data onto an existing object attribute (which would only happen
-        if a filename being loaded has a name collision with an existing
-        object attribute).
+        Prove that ConfigurationPanda.__init__() throws
+        DuplicateJSONFile when an attempt is made to load data onto
+        an existing object attribute.
 
         """
-
-        # Test for duplicate file names in distinct directories.
-        self.assertRaises(
-            DuplicateJSONFile,
-            ConfigurationPanda,
-            ['PRIMARY_CONFIGURATION_FILES', 'DUPLICATE_CONFIGURATION_FILES']
-        )
-
-        # Test for duplicate file names as a result of passing the
-        # same environment variable into the constructor multiple times.
-        self.assertRaises(
-            DuplicateJSONFile,
-            ConfigurationPanda,
-            ['PRIMARY_CONFIGURATION_FILES', 'PRIMARY_CONFIGURATION_FILES']
-        )
+        with pytest.raises(DuplicateJSONFile):
+            ConfigurationPanda(['PRIMARY_CONFIGURATION_FILES',
+                                'PRIMARY_CONFIGURATION_FILES'])
 
     def test_constructor_with_overriding_env_var(self):
         """
@@ -83,10 +75,9 @@ class Test_ConfigurationPanda(TestCase):
         to set the value of an existing environment variable.
 
         """
-
-        self.assertRaises(ExistingEnvironmentVariable,
-                          ConfigurationPanda,
-                          ['PRIMARY_CONFIGURATION_FILES'])
+        with ConfigurationPanda(['PRIMARY_CONFIGURATION_FILES']) as test_object:
+            with pytest.raises(ExistingEnvironmentVariable):
+                ConfigurationPanda(['PRIMARY_CONFIGURATION_FILES'])
 
     def test_constructor_for_environment_variable_assignment(self):
         """
@@ -96,5 +87,7 @@ class Test_ConfigurationPanda(TestCase):
 
         """
 
-        self.assertEqual(os.environ['MY_FAVORITE_FOOD'], "Dumplings")
-        self.assertEqual(os.environ['MY_WORST_NIGHTMARE'], "The Noodle Dream")
+        with ConfigurationPanda(['PRIMARY_CONFIGURATION_FILES']) as test_object:
+            self.assertEqual(os.environ['MY_FAVORITE_FOOD'], "Dumplings")
+            self.assertEqual(
+                os.environ['MY_WORST_NIGHTMARE'], "The Noodle Dream")
