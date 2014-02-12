@@ -23,7 +23,7 @@ class TestConfigurationPanda(TestCase):
         os.environ['SECONDARY_CONFIGURATION_FILES'] = \
             test_file_path + '/secondary_configuration_files'
         os.environ['INVALID_CONFIGURATION_FILES'] = \
-            test_file_path + '/secondary_configuration_files'
+            test_file_path + '/invalid_configuration_files'
 
     def test_constructor_with_invalid_environment_variables(self):
         """
