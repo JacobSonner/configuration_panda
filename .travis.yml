@@ -1,8 +1,13 @@
 language: python
 python:
-- '2.7'
-install: pip install -r requirements.txt
-script: py.test
+    - '2.7'
+
+install: 
+    pip install -r requirements.txt
+    pip install coveralls pytest-cov
+script: 
+    py.test --cov-report term-missing --cov configuration_panda
+
 deploy:
   provider: pypi
   user: eikonomega
