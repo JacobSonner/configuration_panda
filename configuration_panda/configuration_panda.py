@@ -4,7 +4,8 @@ import os
 import re
 
 from exceptions import (
-    DuplicateJSONFile, InvalidParameter, ExistingEnvironmentVariable)
+    DuplicateJSONFile, InvalidParameter, ExistingEnvironmentVariable,
+    MalformedJSONFile)
 
 
 class ConfigurationPanda(object):
@@ -91,7 +92,7 @@ class ConfigurationPanda(object):
                 self.__setattr__(
                     attribute_name, json.load(configuration_file))
             except ValueError:
-                raise ValueError(
+                raise MalformedJSONFile(
                     "The configuration file, {}, contains JSON "
                     "syntax errors.".format(configuration_file))
 

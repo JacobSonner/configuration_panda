@@ -4,10 +4,11 @@ import pytest
 
 from ..configuration_panda import ConfigurationPanda
 from ..exceptions import (
-    DuplicateJSONFile, InvalidParameter, ExistingEnvironmentVariable)
+    DuplicateJSONFile, InvalidParameter, ExistingEnvironmentVariable,
+    MalformedJSONFile)
 
 
-class Test_ConfigurationPanda(TestCase):
+class TestConfigurationPanda(TestCase):
     """
     Exercises the functionality of the ConfigurationPanda class.
 
@@ -20,6 +21,8 @@ class Test_ConfigurationPanda(TestCase):
         os.environ['PRIMARY_CONFIGURATION_FILES'] = \
             test_file_path + '/primary_configuration_files'
         os.environ['SECONDARY_CONFIGURATION_FILES'] = \
+            test_file_path + '/secondary_configuration_files'
+        os.environ['INVALID_CONFIGURATION_FILES'] = \
             test_file_path + '/secondary_configuration_files'
 
     def test_constructor_with_invalid_environment_variables(self):
@@ -46,7 +49,8 @@ class Test_ConfigurationPanda(TestCase):
         non list as its parameter.
 
         """
-        pass
+        with pytest.raises(MalformedJSONFile):
+            ConfigurationPanda(['INVALID_CONFIGURATION_FILES'])
 
     def test_constructor_attribute_existence(self):
         """
