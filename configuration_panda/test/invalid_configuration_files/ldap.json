@@ -1,0 +1,12 @@
+{
+    "primary": {
+        "url": "ldaps://primaryldap.yourschool.edu:111",
+        "login": "cn=LDAP Testing"
+        "password": "LDAP Password"
+    },
+    "secondary": {
+	"url": "ldaps://secondaryldap.yourschool.edu:111",
+        'login': "cn=LDAP Testing",
+        "password": "LDAP Password"
+    }
+}
