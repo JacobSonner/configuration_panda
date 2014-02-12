@@ -8,6 +8,9 @@ install:
 script: 
     py.test --cov-report term-missing --cov configuration_panda
 
+after_success:
+    coveralls
+
 deploy:
   provider: pypi
   user: eikonomega
