@@ -21,8 +21,6 @@ class Test_ConfigurationPanda(TestCase):
             test_file_path + '/primary_configuration_files'
         os.environ['SECONDARY_CONFIGURATION_FILES'] = \
             test_file_path + '/secondary_configuration_files'
-        os.environ['DUPLICATE_CONFIGURATION_FILES'] = \
-            test_file_path + '/duplicate_configuration_files'
 
     def test_constructor_with_invalid_environment_variables(self):
         """
@@ -32,6 +30,23 @@ class Test_ConfigurationPanda(TestCase):
         """
         with pytest.raises(InvalidParameter):
             ConfigurationPanda(['NON_EXISTENT_ENV_VAR'])
+
+    def test_constructor_with_invalid_argument_type(self):
+        """
+        Prove __init__() throws InvalidParameter when given a
+        non list as its parameter.
+
+        """
+        with pytest.raises(InvalidParameter):
+            ConfigurationPanda(tuple())
+
+    def test_constructor_with_invalid_json_syntax(self):
+        """
+        Prove __init__() throws InvalidParameter when given a
+        non list as its parameter.
+
+        """
+        pass
 
     def test_constructor_attribute_existence(self):
         """
