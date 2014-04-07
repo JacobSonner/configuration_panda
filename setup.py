@@ -17,7 +17,6 @@ setup(
     long_description=configuration_panda.__doc__,
 
     install_requires=requirements,
-    #include_package_data=True,
     package_data={
         '': ['requirements.txt']
     }
