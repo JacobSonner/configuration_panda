@@ -3,9 +3,8 @@ import glob
 import os
 import re
 
-from exceptions import (
-    DuplicateJSONFile, InvalidParameter, ExistingEnvironmentVariable,
-    MalformedJSONFile)
+from exceptions import (MalformedJSONFile, DuplicateJSONFile,
+                        InvalidParameter, ExistingEnvironmentVariable)
 
 
 class ConfigurationPanda(object):

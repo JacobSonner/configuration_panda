@@ -8,6 +8,7 @@ class ConfigurationPandaError(Exception):
     """
     Base exception class for ConfigurationPanda Errors.
     """
+    pass
 
 
 class DuplicateJSONFile(ConfigurationPandaError):
@@ -16,6 +17,7 @@ class DuplicateJSONFile(ConfigurationPandaError):
     with the same names as a previously loaded file.
 
     """
+    pass
 
 
 class MalformedJSONFile(ConfigurationPandaError):
@@ -24,6 +26,7 @@ class MalformedJSONFile(ConfigurationPandaError):
     file contained malformed JSON.
 
     """
+    pass
 
 
 class ExistingEnvironmentVariable(ConfigurationPandaError):
@@ -32,6 +35,7 @@ class ExistingEnvironmentVariable(ConfigurationPandaError):
     program operation from succeeding.
 
     """
+    pass
 
 
 class InvalidParameter(ConfigurationPandaError):
@@ -40,4 +44,5 @@ class InvalidParameter(ConfigurationPandaError):
     input provided by the client.
 
     """
+    pass
 
