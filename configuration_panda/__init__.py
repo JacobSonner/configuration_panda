@@ -92,6 +92,6 @@ at runtime rather than having to make them a permanent fixture in a
 
 """
 
-from configuration_panda import ConfigurationPanda
+from .configuration_panda import ConfigurationPanda
 
 __version__ = '0.11.3'

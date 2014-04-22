@@ -3,7 +3,7 @@ import glob
 import os
 import re
 
-from exceptions import (MalformedJSONFile, DuplicateJSONFile,
+from .exceptions import (MalformedJSONFile, DuplicateJSONFile,
                         InvalidParameter, ExistingEnvironmentVariable)
 
 
