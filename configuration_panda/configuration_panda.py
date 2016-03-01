@@ -35,8 +35,9 @@ class ConfigurationPanda(object):
             self._configuration_files(config_files_location_env_vars))
 
         for configuration_file in configuration_files:
+            path, filename = os.path.split(configuration_file)
             attribute_name = re.search(
-                r"./([_A-Za-z0-9]+).json", configuration_file).groups()[0]
+                r"([_A-Za-z0-9]+).json", filename).groups()[0]
 
             self._check_for_existing_attribute(attribute_name)
             self._load_data_onto_attribute(attribute_name, configuration_file)
